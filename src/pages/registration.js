@@ -14,6 +14,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+
 import auth from '../fire';
 
 function Copyright(props) {
@@ -32,7 +34,7 @@ function Copyright(props) {
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme('#0e0e0e');
 
-export default function SignUp() {
+export default function Register() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -40,19 +42,10 @@ export default function SignUp() {
     const [emailError, setEmailError] = useState('');
 
     const handleSignup = () => {
-        auth
-            .createUserWithEmailAndPassword(email, password)
-            .catch(err => {
-                switch (err.code) {
-                    case "auth/email-already-in-use":
-                    case "auth/invalid-email":
-                        setEmailError(err.message);
-                        break;
-                    case "auth/week-password":
-                        setPasswordError(err.message);
-                        break;
-                }
-            })
+        createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+        });
     }
 
     return (
@@ -120,12 +113,6 @@ export default function SignUp() {
 
                                 />
                             </Grid>
-                            <Grid item xs={12}>
-                                <FormControlLabel
-                                    control={<Checkbox value="allowExtraEmails" color="primary" />}
-                                    label="I want to receive inspiration, marketing promotions and updates via email."
-                                />
-                            </Grid>
                         </Grid>
                         <Button
                             type="submit"
@@ -135,13 +122,6 @@ export default function SignUp() {
                         >
                             Sign Up
                         </Button>
-                        {/* <Grid container justifyContent="flex-end">
-                            <Grid item>
-                                <Link href="#" variant="body2">
-                                    Already have an account? Sign in
-                                </Link>
-                            </Grid>
-                        </Grid> */}
                     </Box>
                 </Box>
                 <Copyright sx={{ mt: 5 }} />

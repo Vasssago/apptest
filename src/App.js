@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "./components/Navbar";  
+import Navbar from "./components/Navbar/Navbar";  
 import {
     BrowserRouter as Router,
     Routes,
@@ -8,6 +8,7 @@ import {
 import Home from "./pages";
 import About from "./pages/about";  
 import SignUp from "./pages/signup";
+import Register from "./pages/registration";
  
 function App() {
     return (
@@ -20,6 +21,7 @@ function App() {
                     path="/sign-up"
                     element={<SignUp />}
                 />
+             <Route path="/register" element={<Register />} />
             </Routes>
         </Router>
     );
